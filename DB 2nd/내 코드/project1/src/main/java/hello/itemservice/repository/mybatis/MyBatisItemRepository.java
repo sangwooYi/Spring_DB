@@ -18,6 +18,8 @@ public class MyBatisItemRepository implements ItemRepository {
 
     @Override
     public Item save(Item item) {
+        // class jdk.proxy3.$Proxy68 , Mybatis 가 만들어준 동적 프록시 객체!
+        log.info("itemMapper class = {}", itemMapper.getClass());
         itemMapper.save(item);
         return item;
     }

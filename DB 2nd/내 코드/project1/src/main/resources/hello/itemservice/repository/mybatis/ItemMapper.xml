@@ -6,6 +6,10 @@
 경로와 파일명이 정확히 일치해야함! 이부분 주의! -->
 <mapper namespace="hello.itemservice.repository.mybatis.ItemMapper">
 
+    <!-- sql 태그로 조각들을 만들어 include 가능 ( 잘 쓰면 굉장히 유용함! )   -->
+    <sql id="selectColumn">
+        id, item_name, price, quantity
+    </sql>
     <!-- generate key 사용하는 경우  useGeneratedKeys 랑 keyProperty 설정 필요 -->
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
         insert into item (item_name, price, quantity)
@@ -23,13 +27,15 @@
     <!-- application.properties 에서 mybatis.type-aliases-package 설정이 아니면
         resultType=hello.itemservice.domain.Item 으로 적어야 함!  -->
     <select id="findById" resultType="Item">
-        select id, item_name, price, quantity
+        select 
+            <include refid="selectColumn"></include>
         from item
         where id = #{id}
     </select>
 
     <select id="findAll" resultType="Item">
-        select id, item_name, price, quantity
+        select
+            <include refid="selectColumn"></include>
         from item
         <!-- where 태그 대신 그냥 where 1=1 로 대체도 가능! -->
         <where>
