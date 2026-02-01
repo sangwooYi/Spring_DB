@@ -1,0 +1,31 @@
+package hello.itemservice.config;
+
+import hello.itemservice.jdbctemplate.JdbcTemplateItemRepositoryV1;
+import hello.itemservice.jdbctemplate.JdbcTemplateItemRepositoryV2;
+import hello.itemservice.repository.ItemRepository;
+import hello.itemservice.service.ItemService;
+import hello.itemservice.service.ItemServiceV1;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import javax.sql.DataSource;
+
+@Configuration
+@RequiredArgsConstructor
+public class JdbcTemplateV2Config {
+
+    // @Import
+    private final DataSource dataSource;
+
+    // 빈 등록 및 의존성 주입
+    @Bean
+    public ItemService itemService() {
+        return new ItemServiceV1(itemRepository());
+    }
+
+    @Bean
+    public ItemRepository itemRepository() {
+        return new JdbcTemplateItemRepositoryV2(dataSource);
+    }
+}
