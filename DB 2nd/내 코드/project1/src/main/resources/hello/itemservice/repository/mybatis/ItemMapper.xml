@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace는 ItemMapper.xml 에 위치 & 해당 xml 은 자바에서 @Mapper 설정된 매퍼 클래스와
+경로와 파일명이 정확히 일치해야함! 이부분 주의! -->
+<mapper namespace="hello.itemservice.repository.mybatis.ItemMapper">
+
+    <!-- generate key 사용하는 경우  useGeneratedKeys 랑 keyProperty 설정 필요 -->
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into item (item_name, price, quantity)
+        values (#{itemName}, #{price}, #{quantity})
+    </insert>
+
+    <update id="update">
+        update item
+        set item_name = #{updateParam.itemName},
+            price = #{updateParam.price},
+            quantity = #{updateParam.quantity}
+        where id = #{id}
+    </update>
+
+    <!-- application.properties 에서 mybatis.type-aliases-package 설정이 아니면
+        resultType=hello.itemservice.domain.Item 으로 적어야 함!  -->
+    <select id="findById" resultType="Item">
+        select id, item_name, price, quantity
+        from item
+        where id = #{id}
+    </select>
+
+    <select id="findAll" resultType="Item">
+        select id, item_name, price, quantity
+        from item
+        <!-- where 태그 대신 그냥 where 1=1 로 대체도 가능! -->
+        <where>
+            <if test="itemName != null and itemName != ''">
+                and item_name like concat('%', #{itemName},'%')
+            </if>
+            <!-- lt 는 <, le 는 <=, gt 는 >, ge 는 >= -->
+            <if test="maxPrice != null">
+                <!-- < 랑 > 는 xml 문법에서 태그와 충돌되게 때문에
+                    < 는 &lt; , > 는 &gt; 로 치환해서 적어주어야 함! 이부분 주의!
+                -->
+                and price  &lt;= #{maxPrice}
+            </if>
+        </where>
+    </select>
+</mapper>

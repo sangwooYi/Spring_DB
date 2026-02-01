@@ -1,9 +1,6 @@
 package hello.itemservice;
 
-import hello.itemservice.config.JdbcTemplateV1Config;
-import hello.itemservice.config.JdbcTemplateV2Config;
-import hello.itemservice.config.JdbcTemplateV3Config;
-import hello.itemservice.config.MemoryConfig;
+import hello.itemservice.config.*;
 import hello.itemservice.repository.ItemRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +14,7 @@ import javax.sql.DataSource;
 
 // @Import 는 Config 파일을 어떤 걸 적용할지는 정하는 부분!
 //@Import(MemoryConfig.class)
-@Import(JdbcTemplateV3Config.class)
+@Import(MyBatisConfig.class)
 // @ComponentScan 은 디폴트로 이 어노테이션이 설정된 클래스 하위레벨 전체를 스캔함
 // scanBasePackages 를 통해 스캔범위를 지정 가능! ( 이번 예제는 컨트롤러 외에는 전부 수동 @Bean 등록을 진행 해서 이걸 적용 )
 @SpringBootApplication(scanBasePackages = "hello.itemservice.web")
