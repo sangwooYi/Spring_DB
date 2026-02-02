@@ -66,6 +66,7 @@ class ItemRepositoryTest {
 
     // 만약 테스트에서도 commit 하고 싶으면 이 어노테이션 추가 ( @Transactional 처럼 당연히 클래스 단위로도 붙일 수 있음 )
 //    @Commit
+    // 참고! JPA update 구문 보려면 커밋 되야한다! ( 수정된 엔티티가 캐시에만 저장 되어있다 롤백하면 그냥 업데이트 안하고 날라감 )
     @Test
     void updateItem() {
         //given
