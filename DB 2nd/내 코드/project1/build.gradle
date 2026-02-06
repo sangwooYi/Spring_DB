@@ -1,7 +1,7 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.5.10'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'org.springframework.boot' version '3.5.10'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'hello'
@@ -9,27 +9,31 @@ version = '0.0.1-SNAPSHOT'
 description = 'Demo project for Spring Boot'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.projectlombok:lombok'
-//    implementation 'org.springframework.boot:spring-boot-starter-jdbc'    // JPA 쓰는 경우 JDBC는 이미 포함되어있다
+    // 롬복 프로세서를 명시적으로 추가
+    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+
+    // implementation 'org.springframework.boot:spring-boot-starter-jdbc'    // JPA 쓰는 경우 JDBC는 이미 포함되어있다
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.5' // Mybatis
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-    // queryDsl 설정
+    // queyDsl 설정
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
@@ -41,10 +45,10 @@ dependencies {
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
-// QueryDsl 설정 자동생성된 Q클래스 gradle clean 으로 제거
+//Querydsl 추가, 자동 생성된 Q클래스 gradle clean으로 제거
 clean {
     delete file('src/main/generated')
 }

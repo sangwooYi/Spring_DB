@@ -6,15 +6,12 @@ import hello.itemservice.repository.ItemUpdateDto;
 import hello.itemservice.repository.memory.MemoryItemRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.Arrays;
 import java.util.List;
@@ -116,7 +113,6 @@ class ItemRepositoryTest {
     // 즉 Item... items 랑 Item[] items 은 사실 같음. 다만 해당 메서드 호춣할때 방법이 다름
     // 전자는 ( , item1, item2, item3) 이런식으로 나열,  후자는 Item[] 타입 상태로 전달해야 함 ( or new Item[]{item1, item2 .. } )
     void test(String itemName, Integer maxPrice, Item... items) {
-        log.info("items = {}", Arrays.asList(items));   // 따라서 출력하려면 List 로 바꿔줘야 함
         List<Item> result = itemRepository.findAll(new ItemSearchCond(itemName, maxPrice));
         assertThat(result).contains(items);
     }
